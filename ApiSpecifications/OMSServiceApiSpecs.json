@@ -6,7 +6,7 @@
         "description": "An example API specification"
     },
     "paths": {
-        "/services": {
+        "localhost:7068/swagger/services": {
             "get": {
                 "summary": "List services",
                 "operationId": "listServices",
@@ -48,7 +48,7 @@
                 }
             }
         },
-        "/services/{serviceId}": {
+        "localhost:7068/swagger/services/{serviceId}": {
             "get": {
                 "summary": "View service",
                 "operationId": "viewService",

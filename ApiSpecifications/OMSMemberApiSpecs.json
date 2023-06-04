@@ -5,7 +5,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/members/invite": {
+        "localhost:7068/swagger/members/invite": {
             "post": {
                 "summary": "Invite a member",
                 "operationId": "inviteMember",
@@ -32,7 +32,7 @@
                 }
             }
         },
-        "/members/cancel-invite/{inviteId}": {
+        "localhost:7068/swagger/members/cancel-invite/{inviteId}": {
             "delete": {
                 "summary": "Cancel an invite",
                 "operationId": "CancelMember",
@@ -59,7 +59,7 @@
                 }
             }
         },
-        "/members/accept-invite/{inviteId}": {
+        "localhost:7068/swagger/members/accept-invite/{inviteId}": {
             "put": {
                 "summary": "Accept an invite",
                 "operationId": "acceptMember",
@@ -86,7 +86,7 @@
                 }
             }
         },
-        "/members": {
+        "localhost:7068/swagger/members": {
             "get": {
                 "summary": "Get all members",
                 "operationId": "getAllMember",
@@ -113,7 +113,7 @@
                 }
             }
         },
-        "/members/{role}": {
+        "localhost:7068/swagger/members/{role}": {
             "get": {
                 "summary": "Filter members by roles",
                 "operationId": "filterMember",
@@ -150,7 +150,7 @@
                 }
             }
         },
-        "/members/{memberId}": {
+        "localhost:7068/swagger/members/{memberId}": {
             "delete": {
                 "summary": "Deactivate a member",
                 "operationId": "deactivateMember",
