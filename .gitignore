@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.idea
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -478,3 +479,60 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Visual Studio Code - exclude user-specific settings
+.vscode/
+
+# NuGet packages folder
+packages/
+
+# .NET build output folders
+/bin/
+/obj/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Build results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# .NET Core
+.project.lock.json
+.project.assets.json
+
+# Roslyn analyzer cache
+.rider/
+resharper/
+roslyn-analyzers/
+
+# Rider generated files
+.idea/
+
+# Local History for Visual Studio
+.localhistory/
+
+# Rider workspace files
+*.rider/workspace.xml
+*.rider/tasks.xml
+
+# Unity generated files
+Temp/
+UnityGenerated/
+Library/
+
+# Entity Framework Migrations
+*/[Mm]igrations/
+
+# Miscellaneous
+*.DS_Store
