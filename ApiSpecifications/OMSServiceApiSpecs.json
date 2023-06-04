@@ -157,8 +157,8 @@
                 "items": {
                     "type": "object",
                     "properties": {
-                        "id": {
-                            "type": "integer"
+                        "ServiceId": {
+                            "type": "string"
                         },
                         "name": {
                             "type": "string"
