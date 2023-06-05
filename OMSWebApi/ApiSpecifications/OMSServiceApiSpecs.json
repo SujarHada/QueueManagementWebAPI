@@ -1,0 +1,174 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OMS Service Management API",
+        "version": "1.0.0",
+        "description": "An example API specification"
+    },
+    "paths": {
+        "localhost:7068/swagger/services": {
+            "get": {
+                "summary": "List services",
+                "operationId": "listServices",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Service"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "desccription": "No services found"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Add a service",
+                "operationId": "addService",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Service"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Service created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid Inputs"
+                    }
+                }
+            }
+        },
+        "localhost:7068/swagger/services/{serviceId}": {
+            "get": {
+                "summary": "View service",
+                "operationId": "viewService",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Service"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update service",
+                "operationId": "updateService",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Service updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid Inputs"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Archive service",
+                "operationId": "archiveService",
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service archived successfully"
+                    },
+                    "404": {
+                        "desccription": "Not Found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "compoenents": {
+        "schemas": {
+            "Service": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "ServiceId": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
