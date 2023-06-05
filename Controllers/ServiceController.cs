@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using OMSWebApi.Entity;
-using OMSWebApi.Data;
-using OMSWebApi.Models;
+
 namespace OMSWebApi.Controllers
 {
 
@@ -9,30 +7,19 @@ namespace OMSWebApi.Controllers
     [Route("api/[controller]")]
     public class HomeController : Controller
     {
-      private readonly ServiceDbContext _dbContext;
+     
 
-       public HomeController(ServiceDbContext dbContext)
+       public HomeController()
       {
-        _dbContext = dbContext;
+        
       }
-
    
             [HttpPost]
 
-            public async Task<IActionResult> AddService(AddService addService)
+        public Task<object?> AddService()
         {
-                var service = new Service()
-                {
-                   ServiceId = Guid.NewGuid(),
-                   ServiceName = addService.ServiceName,
-                   Description = addService.Description
-                };
-
-                await _dbContext.Services.AddAsync(service);
-                await _dbContext.SaveChangesAsync();
-
-                return Ok(service);
-            }
+            return Task.FromResult<object?>(null);
+        }
 
     }
 
