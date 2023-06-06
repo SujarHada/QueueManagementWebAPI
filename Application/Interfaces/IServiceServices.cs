@@ -11,7 +11,13 @@ namespace Application.Interfaces
     public interface IServiceServices
     {
 
-        public  Task<Service> AddServiceAsync(AddService service);
+        public Task<Service> AddServiceAsync(AddService service);
+        public Task<IEnumerable<Service>> ListServicesAsync();
+
+        public Task<Service> ViewServiceAsync(Guid ServiceId);
+
+        public Task<Service> UpdateServiceAsync(Service service, UpdateService updateService);
+        public Task<Service> ArchiveServiceAsync(Service service);
 
     }
 }

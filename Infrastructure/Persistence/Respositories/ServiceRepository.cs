@@ -37,5 +37,35 @@ namespace Infrastructure.Persistence.Respositories
             return service;
 
         }
+
+        public async Task<IEnumerable<Service>> ListServicesAsync()
+        {
+            return await _dbContext.Services.ToListAsync();
+        }
+
+        public async Task<Service> ViewServiceAsync(Guid ServiceId)
+        {
+           return await _dbContext.Services.FindAsync(ServiceId);
+        }
+
+
+        public async Task<Service> UpdateServiceAsync(Service service, UpdateService updateService)
+        {
+            service.ServiceName = updateService.ServiceName;
+            service.ServiceDescription = updateService.ServiceDescription;
+
+            await _dbContext.SaveChangesAsync();
+            return service;
+        }
+
+        public async Task<Service> ArchiveServiceAsync(Service service)
+        {
+            _dbContext.Services.Remove(service);
+            await _dbContext.SaveChangesAsync();
+            return service;
+
+        }
+
+
     }
 }
