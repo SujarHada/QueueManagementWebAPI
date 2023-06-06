@@ -1,25 +1,36 @@
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistence;
+using Application.Interfaces;
 
 namespace OMSWebApi.Controllers
 {
 
     [ApiController]
     [Route("api/[controller]")]
-    public class HomeController : Controller
+    public class ServiceController : Controller
     {
-     
 
-       public HomeController()
+        private readonly IServiceServices _serviceServices; 
+       
+
+       public ServiceController(IServiceServices serviceServices)
       {
-        
+            _serviceServices = serviceServices;
+          
       }
-   
-            [HttpPost]
 
-        public Task<object?> AddService()
-        {
-            return Task.FromResult<object?>(null);
-        }
+
+        [HttpPost]
+       public async Task<IActionResult> AddService(AddService addservice)
+       {
+            
+            var add = await _serviceServices.AddServiceAsync(addservice);
+
+            return Ok(add);
+       }
 
     }
 
