@@ -3,14 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Persistence;
-using Application.Interfaces;
+using Application.ServicesApi.Interfaces;
 using Infrastructure.Persistence.Respositories;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace OMSWebApi.Controllers
 {
 
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ServiceController : Controller
     {
 
@@ -27,10 +31,17 @@ namespace OMSWebApi.Controllers
         [HttpPost]
        public async Task<IActionResult> AddService(AddService addservice)
        {
-            
- 
+            var role = User.FindFirst("Role")?.Value;
+            if (role == "admin")
+            {
+                return Ok(await _serviceServices.AddServiceAsync(addservice));
+            }
 
-            return Ok(await _serviceServices.AddServiceAsync(addservice));
+            else
+            {
+                return BadRequest("Only Admin can create services");
+            }
+
        }
 
         [HttpGet]
