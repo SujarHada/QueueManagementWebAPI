@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
 
 
 var builder = WebApplication.CreateBuilder(args);

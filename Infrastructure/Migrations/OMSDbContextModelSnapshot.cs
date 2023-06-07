@@ -22,11 +22,14 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Service", b =>
+            modelBuilder.Entity("Domain.Entities.ServiceEnitity", b =>
                 {
                     b.Property<Guid>("ServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsArchive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ServiceDescription")
                         .IsRequired()

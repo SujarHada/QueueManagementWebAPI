@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.ServicesApi.Interfaces;
+﻿using Application.ServicesApi.Interfaces;
 using Domain.Entities;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Respositories
 {
+  
     public class ServiceRepository : IServiceRepository
     {
 
@@ -27,7 +24,8 @@ namespace Infrastructure.Persistence.Respositories
             {
                 ServiceId = Guid.NewGuid(),
                 ServiceName = addService.ServiceName,
-                ServiceDescription = addService.ServiceDescription
+                ServiceDescription = addService.ServiceDescription,
+                IsArchive = false 
             };
 
             await _dbContext.Services.AddAsync(service);
@@ -38,9 +36,18 @@ namespace Infrastructure.Persistence.Respositories
 
         }
 
-        public async Task<IEnumerable<ServiceEnitity>> ListServicesAsync()
+        public async Task<IEnumerable<ServiceEnitity>> ListServicesAsync(string? role)
         {
-            return await _dbContext.Services.ToListAsync();
+           if (role == "admin")
+            {
+                return await _dbContext.Services.ToListAsync();
+            }
+
+            else
+            {
+                return await _dbContext.Services.Where(service => !service.IsArchive).ToListAsync();
+            }
+                
         }
 
         public async Task<ServiceEnitity> ViewServiceAsync(Guid ServiceId)
@@ -58,7 +65,7 @@ namespace Infrastructure.Persistence.Respositories
             return service;
         }
 
-        public async Task<ServiceEnitity> ArchiveServiceAsync(ServiceEnitity service)
+        public async Task<ServiceEnitity> DeleteServiceAsync(ServiceEnitity service)
         {
             _dbContext.Services.Remove(service);
             await _dbContext.SaveChangesAsync();
@@ -66,6 +73,13 @@ namespace Infrastructure.Persistence.Respositories
 
         }
 
+        public async Task<ServiceEnitity> ArchiveServiceAsync(ServiceEnitity Service)
+        {
+            Service.IsArchive = !Service.IsArchive;
 
+            await _dbContext.SaveChangesAsync();
+
+            return Service;
+        }
     }
 }

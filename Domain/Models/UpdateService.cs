@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Domain.Models
 {
@@ -10,5 +6,7 @@ namespace Domain.Models
     {
         public string ServiceName { get; set; }
         public string ServiceDescription { get; set; }
+
+        public bool IsArchive { get; set; }
     }
 }

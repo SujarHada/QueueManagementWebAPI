@@ -1,11 +1,6 @@
 ﻿using Application.ServicesApi.Interfaces;
 using Domain.Entities;
 using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.ServicesApi.Service
 {
@@ -22,9 +17,9 @@ namespace Application.ServicesApi.Service
             return await _serviceRepository.AddServiceAsync(service);
         }
 
-        public async Task<IEnumerable<ServiceEnitity>> ListServicesAsync()
+        public async Task<IEnumerable<ServiceEnitity>> ListServicesAsync(string? role)
         {
-            return await _serviceRepository.ListServicesAsync();
+            return await _serviceRepository.ListServicesAsync(role);
         }
 
         public async Task<ServiceEnitity> ViewServiceAsync(Guid ServiceId)
@@ -36,6 +31,11 @@ namespace Application.ServicesApi.Service
         {
             return await _serviceRepository.UpdateServiceAsync(service, updateService);
         }
+        public async Task<ServiceEnitity> DeleteServiceAsync(ServiceEnitity service)
+        {
+            return await _serviceRepository.DeleteServiceAsync(service);
+        }
+
         public async Task<ServiceEnitity> ArchiveServiceAsync(ServiceEnitity service)
         {
             return await _serviceRepository.ArchiveServiceAsync(service);

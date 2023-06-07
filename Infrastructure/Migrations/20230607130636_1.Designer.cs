@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(OMSDbContext))]
-    [Migration("20230607100557_second")]
-    partial class second
+    [Migration("20230607130636_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,11 +25,14 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Service", b =>
+            modelBuilder.Entity("Domain.Entities.ServiceEnitity", b =>
                 {
                     b.Property<Guid>("ServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsArchive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ServiceDescription")
                         .IsRequired()

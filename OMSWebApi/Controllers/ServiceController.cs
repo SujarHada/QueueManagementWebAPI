@@ -1,10 +1,6 @@
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Infrastructure.Persistence;
 using Application.ServicesApi.Interfaces;
-using Infrastructure.Persistence.Respositories;
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -18,19 +14,19 @@ namespace OMSWebApi.Controllers
     public class ServiceController : Controller
     {
 
-        private readonly IServiceServices _serviceServices; 
-       
+        private readonly IServiceServices _serviceServices;
 
-       public ServiceController(IServiceServices serviceServices)
-      {
+
+        public ServiceController(IServiceServices serviceServices)
+        {
             _serviceServices = serviceServices;
-          
-      }
+
+        }
 
 
         [HttpPost]
-       public async Task<IActionResult> AddService(AddService addservice)
-       {
+        public async Task<IActionResult> AddService(AddService addservice)
+        {
             var role = User.FindFirst("Role")?.Value;
             if (role == "admin")
             {
@@ -42,13 +38,14 @@ namespace OMSWebApi.Controllers
                 return BadRequest("Only Admin can create services");
             }
 
-       }
+        }
 
         [HttpGet]
 
         public async Task<IActionResult> ListServices()
         {
-            return Ok(await _serviceServices.ListServicesAsync());
+            var role = User.FindFirst("Role")?.Value;
+            return Ok(await _serviceServices.ListServicesAsync(role));
         }
 
         [HttpGet]
@@ -62,17 +59,30 @@ namespace OMSWebApi.Controllers
 
         [HttpPut]
         [Route("{ServiceId:guid}")]
-        public async Task<IActionResult> UpdateService([FromRoute] Guid ServiceId , UpdateService updateService)
+        public async Task<IActionResult> UpdateService([FromRoute] Guid ServiceId, UpdateService updateService)
         {
             var service = await _serviceServices.ViewServiceAsync(ServiceId);
             if (service == null)
                 return BadRequest("Service Not Found");
-            return Ok(await _serviceServices.UpdateServiceAsync(service , updateService));
+            return Ok(await _serviceServices.UpdateServiceAsync(service, updateService));
         }
+
+
 
         [HttpDelete]
 
         [Route("{ServiceId:guid}")]
+        public async Task<IActionResult> DeleteService([FromRoute] Guid ServiceId)
+        {
+            var service = await _serviceServices.ViewServiceAsync(ServiceId);
+            if (service == null)
+                return BadRequest("Service Not Found");
+            return Ok(await _serviceServices.DeleteServiceAsync(service));
+        }
+
+
+        [HttpPut]
+        [Route("Archive/{ServiceId:guid}")]
         public async Task<IActionResult> ArchiveService([FromRoute] Guid ServiceId)
         {
             var service = await _serviceServices.ViewServiceAsync(ServiceId);
@@ -80,7 +90,6 @@ namespace OMSWebApi.Controllers
                 return BadRequest("Service Not Found");
             return Ok(await _serviceServices.ArchiveServiceAsync(service));
         }
-
 
 
 
