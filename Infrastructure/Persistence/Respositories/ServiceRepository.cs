@@ -1,7 +1,9 @@
-﻿using Application.ServicesApi.Interfaces;
+﻿using Application.ApiExceptionHandling.Exceptions;
+using Application.ServicesApi.Interfaces;
+using Application.ServicesApi.Service;
 using Domain.Entities;
 using Domain.Models;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Respositories
@@ -20,19 +22,34 @@ namespace Infrastructure.Persistence.Respositories
 
         public async Task<ServiceEnitity> AddServiceAsync(AddService addService)
         {
-            var service = new ServiceEnitity()
+            var Namechecker = await _dbContext.Services.FirstOrDefaultAsync(u => u.ServiceName == addService.ServiceName );
+            var DesChecker = await _dbContext.Services.FirstOrDefaultAsync(u=> u.ServiceDescription == addService.ServiceDescription);
+
+            if (Namechecker == null)
             {
-                ServiceId = Guid.NewGuid(),
-                ServiceName = addService.ServiceName,
-                ServiceDescription = addService.ServiceDescription,
-                IsArchive = false 
-            };
+              if (DesChecker == null)
+                {
+                    var service = new ServiceEnitity()
+                    {
+                        ServiceId = Guid.NewGuid(),
+                        ServiceName = addService.ServiceName,
+                        ServiceDescription = addService.ServiceDescription,
+                        IsArchive = false
+                    };
 
-            await _dbContext.Services.AddAsync(service);
-            await _dbContext.SaveChangesAsync();
+                    await _dbContext.Services.AddAsync(service);
+                    await _dbContext.SaveChangesAsync();
+                    return service;
+                }
+
+                throw new DuplicateServices(addService.ServiceName , addService.ServiceDescription);
+
+            }
+
+            throw new DuplicateServices(addService.ServiceName);
 
 
-            return service;
+
 
         }
 
@@ -52,34 +69,75 @@ namespace Infrastructure.Persistence.Respositories
 
         public async Task<ServiceEnitity> ViewServiceAsync(Guid ServiceId)
         {
-           return await _dbContext.Services.FindAsync(ServiceId);
-        }
+            ServiceEnitity service =  await _dbContext.Services.FindAsync(ServiceId);
 
+            if (service == null)
+                throw new ServiceNotFound();
 
-        public async Task<ServiceEnitity> UpdateServiceAsync(ServiceEnitity service, UpdateService updateService)
-        {
-            service.ServiceName = updateService.ServiceName;
-            service.ServiceDescription = updateService.ServiceDescription;
-
-            await _dbContext.SaveChangesAsync();
             return service;
         }
 
-        public async Task<ServiceEnitity> DeleteServiceAsync(ServiceEnitity service)
+
+        public async Task<ServiceEnitity> UpdateServiceAsync(Guid ServiceId, UpdateService updateService)
+        { 
+            ServiceEnitity service = await _dbContext.Services.FindAsync(ServiceId);
+            var changeChecker = await _dbContext.Services.FirstOrDefaultAsync(u => u.ServiceName == service.ServiceName && u.ServiceDescription == service.ServiceDescription);
+            var nameChecker = await _dbContext.Services.FirstOrDefaultAsync(u => u.ServiceName == updateService.ServiceName);
+            var descriptionChecker = await _dbContext.Services.FirstOrDefaultAsync(u => u.ServiceDescription == updateService.ServiceDescription);
+
+            if (nameChecker == null)
+            {
+                if (descriptionChecker == null)
+                {
+
+                    if (changeChecker.ServiceName != updateService.ServiceName || changeChecker.ServiceDescription != updateService.ServiceDescription)
+                    {
+
+                        service.ServiceName = updateService.ServiceName;
+                        service.ServiceDescription = updateService.ServiceDescription;
+
+                        await _dbContext.SaveChangesAsync();
+                        return service;
+
+                    }
+
+                    throw new NoUpdatesMade(service.ServiceName);
+                }
+
+                throw new DuplicateServices(updateService.ServiceName, updateService.ServiceDescription);
+
+            }
+
+            throw new DuplicateServices(updateService.ServiceName);
+
+
+        }
+
+        public async Task<ServiceEnitity> DeleteServiceAsync(Guid ServiceId)
         {
+            ServiceEnitity service = await _dbContext.Services.FindAsync(ServiceId);
+            if (service == null)
+                throw new ServiceNotFound();
+
             _dbContext.Services.Remove(service);
             await _dbContext.SaveChangesAsync();
             return service;
 
         }
 
-        public async Task<ServiceEnitity> ArchiveServiceAsync(ServiceEnitity Service)
+        public async Task<ServiceEnitity> ArchiveServiceAsync(Guid ServiceId)
         {
-            Service.IsArchive = !Service.IsArchive;
+            ServiceEnitity service = await _dbContext.Services.FindAsync(ServiceId);
+
+            if (service == null)
+                throw new ServiceNotFound();
+
+
+            service.IsArchive = !service.IsArchive;
 
             await _dbContext.SaveChangesAsync();
 
-            return Service;
+            return service;
         }
     }
 }

@@ -29,11 +29,11 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "OMS User Authentication",
+        Title = "OMS User Authentication_Hello",
         Version = "v1"
     });
 
-    c.AddSecurityDefinition("Bearer",
+    /*c.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme
         {
             Name = "Authorization",
@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(c =>
             Type = SecuritySchemeType.ApiKey,
             Scheme = "Bearer"
         }
-    );
+    );*/
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -89,15 +89,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OMS User Authentication")
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OMS User")
         );
 
 }
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapControllers();
 

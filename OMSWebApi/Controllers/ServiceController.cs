@@ -45,7 +45,15 @@ namespace OMSWebApi.Controllers
         public async Task<IActionResult> ListServices()
         {
             var role = User.FindFirst("Role")?.Value;
-            return Ok(await _serviceServices.ListServicesAsync(role));
+            if (role == "admin" || role == "outpatient" || role == "member")
+            {
+                return Ok(await _serviceServices.ListServicesAsync(role));
+            }
+
+            else
+            {
+                return BadRequest("You cannot access this feature");
+            }
         }
 
         [HttpGet]
@@ -53,7 +61,17 @@ namespace OMSWebApi.Controllers
 
         public async Task<IActionResult> ViewService([FromRoute] Guid ServiceId)
         {
-            return Ok(await _serviceServices.ViewServiceAsync(ServiceId));
+            var role = User.FindFirst("Role")?.Value;
+            if (role == "admin" || role == "outpatient" || role == "member")
+            {
+
+                return Ok(await _serviceServices.ViewServiceAsync(ServiceId));
+            }
+
+            else
+            {
+                return BadRequest("You cannot access this feature");
+            }
         }
 
 
@@ -61,23 +79,35 @@ namespace OMSWebApi.Controllers
         [Route("{ServiceId:guid}")]
         public async Task<IActionResult> UpdateService([FromRoute] Guid ServiceId, UpdateService updateService)
         {
-            var service = await _serviceServices.ViewServiceAsync(ServiceId);
-            if (service == null)
-                return BadRequest("Service Not Found");
-            return Ok(await _serviceServices.UpdateServiceAsync(service, updateService));
+
+            var role = User.FindFirst("Role")?.Value;
+            if (role == "admin")
+            {
+                return Ok(await _serviceServices.UpdateServiceAsync(ServiceId, updateService));
+            }
+
+            else
+            {
+                return BadRequest("Only Admin can update services");
+            }
         }
 
 
 
         [HttpDelete]
-
         [Route("{ServiceId:guid}")]
         public async Task<IActionResult> DeleteService([FromRoute] Guid ServiceId)
         {
-            var service = await _serviceServices.ViewServiceAsync(ServiceId);
-            if (service == null)
-                return BadRequest("Service Not Found");
-            return Ok(await _serviceServices.DeleteServiceAsync(service));
+            var role = User.FindFirst("Role")?.Value;
+            if (role == "admin")
+            {
+                return Ok(await _serviceServices.DeleteServiceAsync(ServiceId));
+            }
+
+            else
+            {
+                return BadRequest("Only Admin can delete services");
+            }
         }
 
 
@@ -85,10 +115,22 @@ namespace OMSWebApi.Controllers
         [Route("Archive/{ServiceId:guid}")]
         public async Task<IActionResult> ArchiveService([FromRoute] Guid ServiceId)
         {
-            var service = await _serviceServices.ViewServiceAsync(ServiceId);
-            if (service == null)
-                return BadRequest("Service Not Found");
-            return Ok(await _serviceServices.ArchiveServiceAsync(service));
+            var role = User.FindFirst("Role")?.Value;
+           
+                if (role == "admin")
+            {
+
+         
+                return Ok(await _serviceServices.ArchiveServiceAsync(ServiceId));
+
+            }
+
+            else
+            {
+                return BadRequest("Only Admin can archive services");
+            }
+
+
         }
 
 

@@ -10,10 +10,10 @@ namespace Application.ServicesApi.Interfaces
 
         public Task<ServiceEnitity> ViewServiceAsync(Guid ServiceId);
 
-        public Task<ServiceEnitity> UpdateServiceAsync(ServiceEnitity service , UpdateService updateService);
-        public Task<ServiceEnitity> DeleteServiceAsync(ServiceEnitity Service);
+        public Task<ServiceEnitity> UpdateServiceAsync(Guid ServiceId, UpdateService updateService);
+        public Task<ServiceEnitity> DeleteServiceAsync(Guid ServiceId );
 
-        public Task<ServiceEnitity> ArchiveServiceAsync(ServiceEnitity Service);
+        public Task<ServiceEnitity> ArchiveServiceAsync(Guid ServiceId);
 
     }
 }

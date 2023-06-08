@@ -1,6 +1,8 @@
-﻿using Application.ServicesApi.Interfaces;
+﻿using Application.ApiExceptionHandling.Responses;
+using Application.ServicesApi.Interfaces;
 using Domain.Entities;
 using Domain.Models;
+using System.Linq.Expressions;
 
 namespace Application.ServicesApi.Service
 {
@@ -12,9 +14,19 @@ namespace Application.ServicesApi.Service
         {
             _serviceRepository = serviceRepository;
         }
-        public async Task<ServiceEnitity> AddServiceAsync(AddService service)
+        public async Task<ApiExceptionResponse<ServiceEnitity>> AddServiceAsync(AddService service)
         {
-            return await _serviceRepository.AddServiceAsync(service);
+            try
+            {
+                var res = await _serviceRepository.AddServiceAsync(service);
+                return new ApiExceptionResponse<ServiceEnitity>(res);
+            }
+            
+            catch (Exception ex){
+
+                return new ApiExceptionResponse<ServiceEnitity>(ex);
+
+            }
         }
 
         public async Task<IEnumerable<ServiceEnitity>> ListServicesAsync(string? role)
@@ -22,23 +34,62 @@ namespace Application.ServicesApi.Service
             return await _serviceRepository.ListServicesAsync(role);
         }
 
-        public async Task<ServiceEnitity> ViewServiceAsync(Guid ServiceId)
+        public async Task<ApiExceptionResponse<ServiceEnitity>> ViewServiceAsync(Guid ServiceId)
         {
-            return await _serviceRepository.ViewServiceAsync(ServiceId);
+            try
+            {
+
+                var res = await _serviceRepository.ViewServiceAsync(ServiceId);
+                return new ApiExceptionResponse<ServiceEnitity>(res);
+            }
+
+            catch (Exception ex)
+            {
+                return new ApiExceptionResponse<ServiceEnitity>(ex);
+            }
         }
 
-        public async Task<ServiceEnitity> UpdateServiceAsync(ServiceEnitity service, UpdateService updateService)
+        public async Task<ApiExceptionResponse<ServiceEnitity>> UpdateServiceAsync(Guid ServiceId, UpdateService updateService)
         {
-            return await _serviceRepository.UpdateServiceAsync(service, updateService);
+            try
+            {
+                var res = await _serviceRepository.UpdateServiceAsync(ServiceId, updateService);
+                return new ApiExceptionResponse<ServiceEnitity>(res);
+            }
+
+            catch (Exception ex) 
+            {
+                return new ApiExceptionResponse<ServiceEnitity>(ex);
+            }
         }
-        public async Task<ServiceEnitity> DeleteServiceAsync(ServiceEnitity service)
+        public async Task<ApiExceptionResponse<ServiceEnitity>> DeleteServiceAsync(Guid ServiceId)
         {
-            return await _serviceRepository.DeleteServiceAsync(service);
+            try
+            {
+                var res = await _serviceRepository.DeleteServiceAsync(ServiceId);
+                return new ApiExceptionResponse<ServiceEnitity>(res);
+
+            }
+
+
+            catch (Exception ex)
+            {
+                return new ApiExceptionResponse<ServiceEnitity>(ex);
+            }
         }
 
-        public async Task<ServiceEnitity> ArchiveServiceAsync(ServiceEnitity service)
+        public async Task<ApiExceptionResponse<ServiceEnitity>> ArchiveServiceAsync(Guid ServiceId)
         {
-            return await _serviceRepository.ArchiveServiceAsync(service);
+            try
+            {
+                var res = await _serviceRepository.ArchiveServiceAsync(ServiceId);
+                return new ApiExceptionResponse<ServiceEnitity>(res);
+            }
+
+            catch (Exception ex)
+            {
+                return new ApiExceptionResponse<ServiceEnitity>(ex);
+            }
         }
     }
 }
