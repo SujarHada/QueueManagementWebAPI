@@ -1,0 +1,260 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OMS Member Management API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "localhost:7068/swagger/members/invite": {
+            "post": {
+                "summary": "Invite a member",
+                "operationId": "inviteMember",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InviteRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful invite"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "localhost:7068/swagger/members/cancel-invite/{inviteId}": {
+            "delete": {
+                "summary": "Cancel an invite",
+                "operationId": "CancelMember",
+                "parameters": [
+                    {
+                        "name": "inviteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Invite canceled"
+                    },
+                    "404": {
+                        "description": "Invite not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "localhost:7068/swagger/members/accept-invite/{inviteId}": {
+            "put": {
+                "summary": "Accept an invite",
+                "operationId": "acceptMember",
+                "parameters": [
+                    {
+                        "name": "inviteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invite accepted"
+                    },
+                    "404": {
+                        "description": "Invite not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "localhost:7068/swagger/members": {
+            "get": {
+                "summary": "Get all members",
+                "operationId": "getAllMember",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Members not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "localhost:7068/swagger/members/{role}": {
+            "get": {
+                "summary": "Filter members by roles",
+                "operationId": "filterMember",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Member"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Members not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "localhost:7068/swagger/members/{memberId}": {
+            "delete": {
+                "summary": "Deactivate a member",
+                "operationId": "deactivateMember",
+                "parameters": [
+                    {
+                        "name": "memberId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Member deactivated"
+                    },
+                    "404": {
+                        "description": "Member not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "View member details",
+                "operationId": "viewDetailsMember",
+                "parameters": [
+                    {
+                        "name": "memberId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Member"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Details not found"
+                    },
+                    "500": {
+                        "desccription": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "InviteRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Member": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "organization": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -21,8 +21,9 @@ namespace Application.ServicesApi.Service
                 var res = await _serviceRepository.AddServiceAsync(service);
                 return new ApiExceptionResponse<ServiceEnitity>(res);
             }
-            
-            catch (Exception ex){
+
+            catch (Exception ex)
+            {
 
                 return new ApiExceptionResponse<ServiceEnitity>(ex);
 
@@ -57,7 +58,7 @@ namespace Application.ServicesApi.Service
                 return new ApiExceptionResponse<ServiceEnitity>(res);
             }
 
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return new ApiExceptionResponse<ServiceEnitity>(ex);
             }
@@ -90,6 +91,11 @@ namespace Application.ServicesApi.Service
             {
                 return new ApiExceptionResponse<ServiceEnitity>(ex);
             }
+        }
+
+        public async Task<IEnumerable<ServiceEnitity>> SearchAsync(string? name)
+        {
+            return await _serviceRepository.SearchAsync(name);
         }
     }
 }

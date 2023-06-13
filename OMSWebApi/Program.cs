@@ -33,7 +33,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 
-    /*c.AddSecurityDefinition("Bearer",
+    c.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme
         {
             Name = "Authorization",
@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(c =>
             Type = SecuritySchemeType.ApiKey,
             Scheme = "Bearer"
         }
-    );*/
+    );
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -96,8 +96,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

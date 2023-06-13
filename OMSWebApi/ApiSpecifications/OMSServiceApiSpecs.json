@@ -3,7 +3,7 @@
     "info": {
         "title": "OMS Service Management API",
         "version": "1.0.0",
-        "description": "This is api specificaition for api operations on services "
+        "description": "An example API specification"
     },
     "paths": {
         "localhost:7068/swagger/services": {

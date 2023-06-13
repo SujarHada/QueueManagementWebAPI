@@ -139,5 +139,19 @@ namespace Infrastructure.Persistence.Respositories
 
             return service;
         }
+
+        public async Task<IEnumerable<ServiceEnitity>> SearchAsync(string? name)
+        {
+            IQueryable<ServiceEnitity> query = _dbContext.Services;
+
+            var query = _dbContext.Services.AsQueryable();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(a => a.ServiceName.Contains(name));
+                query = query.OrderBy(a => CalculateSimilarity(a.ServiceName, name));
+            }
+            return await query.ToListAsync();
+        }
     }
 }

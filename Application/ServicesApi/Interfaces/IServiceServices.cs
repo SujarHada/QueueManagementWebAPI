@@ -11,6 +11,8 @@ namespace Application.ServicesApi.Interfaces
         public Task<ApiExceptionResponse<ServiceEnitity>> AddServiceAsync(AddService service);
         public Task<IEnumerable<ServiceEnitity>> ListServicesAsync(string? role);
 
+        public Task<IEnumerable<ServiceEnitity>> SearchAsync(string? name);
+
         public Task<ApiExceptionResponse<ServiceEnitity>> ViewServiceAsync(Guid ServiceId);
 
         public Task<ApiExceptionResponse<ServiceEnitity>> UpdateServiceAsync(Guid ServiceId, UpdateService updateService);

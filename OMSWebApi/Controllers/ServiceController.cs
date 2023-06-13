@@ -2,7 +2,8 @@ using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.ServicesApi.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-
+using Domain.Entities;
+using Infrastructure.Persistence;
 
 
 namespace OMSWebApi.Controllers
@@ -15,6 +16,7 @@ namespace OMSWebApi.Controllers
     {
 
         private readonly IServiceServices _serviceServices;
+        private readonly OMSDbContext _dbContext;
 
 
         public ServiceController(IServiceServices serviceServices)
@@ -131,6 +133,12 @@ namespace OMSWebApi.Controllers
             }
 
 
+        }
+
+        [HttpGet("Searches")]
+        public async Task<ActionResult> SearchAsync(string ServiceName)
+        {
+            return Ok(await _serviceServices.SearchAsync(ServiceName));
         }
 
 
